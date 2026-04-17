@@ -137,3 +137,33 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+# ========================
+# .NET
+# ========================
+
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+.idea/
+
+# Logs
+*.log
+
+# Build results
+Debug/
+Release/
+
+# ASP.NET
+appsettings.Development.json
+
+# OS files
+.DS_Store
+Thumbs.db
