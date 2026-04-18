@@ -1,14 +1,17 @@
 using SupportDesk.Application.Dtos;
+using SupportDesk.Application.Interfaces.Messaging;
 using SupportDesk.Application.Interfaces.Repositories;
 using SupportDesk.Application.Interfaces.Services;
+using SupportDesk.Application.Messaging;
 using SupportDesk.Domain.Entities;
 using SupportDesk.Domain.Enums;
 
 namespace SupportDesk.Application.Services;
 
-public class SupportTicketService(ISupportTicketRepository repository) : ISupportTicketService
+public class SupportTicketService(ISupportTicketRepository repository, ITicketCompletedPublisher ticketCompletedPublisher) : ISupportTicketService
 {
     private readonly ISupportTicketRepository _repository = repository;
+    private readonly ITicketCompletedPublisher _ticketCompletedPublisher = ticketCompletedPublisher;
 
     public async Task<SupportTicketResponse> CreateAsync(CreateSupportTicketRequest request, CancellationToken cancellationToken = default)
     {
@@ -48,6 +51,21 @@ public class SupportTicketService(ISupportTicketRepository repository) : ISuppor
         ticket.UpdatedAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(ticket, cancellationToken);
+        if (ticket.Status == TicketStatus.Completed)
+        {
+            var message = new SupportTicketCompletedMessage
+            {
+                TicketId = ticket.Id,
+                ClientName = ticket.ClientName,
+                ProblemDescription = ticket.ProblemDescription,
+                Priority = (int)ticket.Priority,
+                Status = (int)ticket.Status,
+                CompletedAt = ticket.UpdatedAt
+            };
+            Console.WriteLine("Chamado finalizado. Publicando mensagem no RabbitMQ...");
+
+            await _ticketCompletedPublisher.PublishAsync(message, cancellationToken);
+        }
 
         return Map(ticket);
     }
