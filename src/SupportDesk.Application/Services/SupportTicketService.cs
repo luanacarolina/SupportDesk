@@ -62,7 +62,6 @@ public class SupportTicketService(ISupportTicketRepository repository, ITicketCo
                 Status = (int)ticket.Status,
                 CompletedAt = ticket.UpdatedAt
             };
-            Console.WriteLine("Chamado finalizado. Publicando mensagem no RabbitMQ...");
 
             await _ticketCompletedPublisher.PublishAsync(message, cancellationToken);
         }
