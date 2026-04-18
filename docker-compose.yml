@@ -1,0 +1,38 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: supportdesk-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: supportdesk_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:7
+    container_name: supportdesk-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: supportdesk-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"     # comunicação
+      - "15672:15672"   # painel web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  postgres_data:
+  mongo_data:
