@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SupportDesk.Application.Interfaces.Messaging;
 using SupportDesk.Application.Interfaces.Repositories;
 using SupportDesk.Infrastructure.Data;
+using SupportDesk.Infrastructure.Messaging;
 using SupportDesk.Infrastructure.Repositories;
 
 namespace SupportDesk.Infrastructure;
@@ -17,6 +19,7 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString));
 
         services.AddScoped<ISupportTicketRepository, SupportTicketRepository>();
+        services.AddScoped<ITicketCompletedPublisher, RabbitMqTicketCompletedPublisher>();
 
         return services;
     }
