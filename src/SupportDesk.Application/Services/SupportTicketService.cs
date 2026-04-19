@@ -33,9 +33,9 @@ public class SupportTicketService(ISupportTicketRepository repository, ITicketCo
         return Map(entity);
     }
 
-    public async Task<List<SupportTicketResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SupportTicketResponse>> GetAllAsync(SupportTicketsFilter filter, CancellationToken cancellationToken = default)
     {
-        var tickets = await _repository.GetAllAsync(cancellationToken);
+        var tickets = await _repository.GetAllAsync(filter, cancellationToken);
         return [.. tickets.Select(Map)];
     }
 
