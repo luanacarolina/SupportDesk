@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SupportDesk.Application.Dtos;
 using SupportDesk.Application.Interfaces.Services;
 
 namespace SupportDesk.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SupportTicketsController : ControllerBase
