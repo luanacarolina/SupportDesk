@@ -85,6 +85,10 @@ export default function Tickets({ onLogout }) {
     await loadTickets(filters);
   };
 
+  const handleStatusUpdated = async () => {
+    await loadTickets(filters);
+  };
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -106,7 +110,12 @@ export default function Tickets({ onLogout }) {
         onClear={handleClearFilters}
       />
 
-      <TicketsTable tickets={tickets} loading={loading} />
+      <TicketsTable
+        tickets={tickets}
+        loading={loading}
+        onStatusUpdated={handleStatusUpdated}
+        onUnauthorized={handleLogout}
+      />
     </div>
   );
 }
