@@ -14,11 +14,11 @@ function getPriorityLabel(priority) {
 function getStatusLabel(status) {
   switch (status) {
     case 1:
-      return "Open";
+      return "Aberto";
     case 2:
-      return "In Progress";
+      return "Em Andamento";
     case 3:
-      return "Completed";
+      return "Finalizado";
     default:
       return status;
   }

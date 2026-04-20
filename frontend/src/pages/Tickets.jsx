@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import TicketForm from "../components/TicketForm";
 import TicketFilters from "../components/TicketFilters";
 import TicketsTable from "../components/TicketsTable";
 import { getTickets } from "../services/supportTicketsService";
@@ -13,41 +14,44 @@ export default function Tickets({ onLogout }) {
     status: "",
   });
 
-  const loadTickets = async (customFilters = filters) => {
-    try {
-      setLoading(true);
+  const loadTickets = useCallback(
+    async (customFilters = filters) => {
+      try {
+        setLoading(true);
 
-      const params = {};
+        const params = {};
 
-      if (customFilters.clientName) {
-        params.clientName = customFilters.clientName;
+        if (customFilters.clientName) {
+          params.clientName = customFilters.clientName;
+        }
+
+        if (customFilters.priority) {
+          params.priority = customFilters.priority;
+        }
+
+        if (customFilters.status) {
+          params.status = customFilters.status;
+        }
+
+        const data = await getTickets(params);
+        setTickets(data);
+      } catch (error) {
+        console.error("Erro ao buscar chamados:", error);
+
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          onLogout();
+        }
+      } finally {
+        setLoading(false);
       }
-
-      if (customFilters.priority) {
-        params.priority = customFilters.priority;
-      }
-
-      if (customFilters.status) {
-        params.status = customFilters.status;
-      }
-
-      const data = await getTickets(params);
-      setTickets(data);
-    } catch (error) {
-      console.error("Erro ao buscar chamados:", error);
-
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-        onLogout();
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [filters, onLogout],
+  );
 
   useEffect(() => {
     loadTickets();
-  }, []);
+  }, [loadTickets]);
 
   const handleFilterChange = (field, value) => {
     setFilters((prev) => ({
@@ -77,6 +81,10 @@ export default function Tickets({ onLogout }) {
     onLogout();
   };
 
+  const handleCreated = async () => {
+    await loadTickets(filters);
+  };
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -89,6 +97,7 @@ export default function Tickets({ onLogout }) {
           Sair
         </button>
       </div>
+      <TicketForm onCreated={handleCreated} onUnauthorized={handleLogout} />
 
       <TicketFilters
         filters={filters}
