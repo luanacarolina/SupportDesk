@@ -14,7 +14,8 @@ A solução também conta com processamento assíncrono utilizando mensageria (R
 - .NET 8 (ASP.NET Core Web API)
 - Entity Framework Core
 - PostgreSQL
-- JWT Authentication
+- JWT (JSON Web Token)
+- OpenID Connect (validação de token Google)
 
 ### Mensageria
 - RabbitMQ
@@ -67,9 +68,10 @@ Aplicação:
 
 ##  Autenticação
 
-A aplicação utiliza autenticação JWT.
+A aplicação implementa autenticação híbrida.
 
-Usuário de teste:
+### Login via credenciais fixas (para facilitar testes)
+Para facilitar a avaliação, o sistema pode ser utilizado sem configuração adicional:
 
 ```json
 {
@@ -77,6 +79,25 @@ Usuário de teste:
   "password": "123456"
 }
 ```
+### Login com Google (OpenID Connect)
+
+O login com Google foi implementado utilizando o protocolo OpenID Connect (OIDC).
+Para testar o login com Google:
+
+1. Crie um Client ID no Google Cloud
+2. Configure:
+
+Frontend (.env):
+REACT_APP_GOOGLE_CLIENT_ID=seu_client_id
+
+Backend (appsettings.json):
+"GoogleAuth": {
+  "ClientId": "seu_client_id"
+}
+
+3. Reinicie o projeto
+3. Subir .env.example
+REACT_APP_GOOGLE_CLIENT_ID=
 
 ##  Estrutura dos Dados
 
@@ -135,10 +156,11 @@ As regras de negócio principais estão isoladas na camada **Application**, enqu
 ##  Fluxo Completo da Aplicação
 
 ### 1. Autenticação
+No projeto eu optei por implementar uma autenticação híbrida, combinando login local com autenticação via Google utilizando OpenID Connect (OIDC).
+Para o login local, o usuário informa suas credenciais no frontend em React, a API valida esses dados e retorna um token JWT, que fica armazenado no frontend e é utilizado nas próximas requisições para acessar os endpoints protegidos.
+Já no login com Google, o usuário se autentica pelo próprio Google no frontend, que recebe um id_token. Esse token é enviado para a API, onde faço a validação e, a partir disso, gero um JWT interno da aplicação. Esse JWT passa a ser utilizado normalmente para autenticação nas demais requisições.
 
-O usuário realiza login pelo frontend em React.  
-A API valida as credenciais e retorna um token JWT.  
-Esse token é armazenado no frontend e enviado nas próximas requisições autenticadas.
+Com isso, consigo separar a autenticação externa (Google) da autorização dentro da aplicação, mantendo o controle de acesso centralizado na API.
 
 ### 2. Cadastro e consulta de chamados
 
