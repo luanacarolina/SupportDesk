@@ -2,7 +2,7 @@
 
 Sistema de gerenciamento de chamados técnicos.
 
-## 📌 Descrição do Projeto
+##  Descrição do Projeto
 
 O **SupportDesk** é uma aplicação fullstack que permite o cadastro, consulta, filtragem e atualização de chamados técnicos.
 
@@ -107,7 +107,7 @@ Tabela: `support_tickets`
 ### MongoDB
 Coleção: `ticket_notifications`
 
-## 📡 Comunicação Assíncrona
+##  Comunicação Assíncrona
 
 - Fila: `support-ticket-completed`
 - Producer: API
