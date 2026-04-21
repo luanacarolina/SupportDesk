@@ -15,7 +15,6 @@ A solução também conta com processamento assíncrono utilizando mensageria (R
 - Entity Framework Core
 - PostgreSQL
 - JWT (JSON Web Token)
-- .NET Worker Service
 - OpenID Connect (validação de token Google)
 
 ### Mensageria
