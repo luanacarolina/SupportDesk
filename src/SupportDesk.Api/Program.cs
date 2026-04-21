@@ -50,6 +50,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<ISupportTicketService, SupportTicketService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
 
 var jwtKey = builder.Configuration["Jwt:Key"]!;

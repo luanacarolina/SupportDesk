@@ -1,4 +1,5 @@
 import { useState } from "react";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 import api from "../services/api";
 
 export default function Login({ onLogin }) {
@@ -26,9 +27,15 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="container vh-100 d-flex justify-content-center align-items-center">
-      <div className="card shadow p-4" style={{ maxWidth: "400px", width: "100%" }}>
+      <div
+        className="card shadow p-4"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <h2 className="text-center mb-4">SupportDesk Login</h2>
-
+        <hr />
+        <div className="d-flex justify-content-center">
+          <GoogleLoginButton onLogin={onLogin} />
+        </div>
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
