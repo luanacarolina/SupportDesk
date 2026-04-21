@@ -51,6 +51,7 @@ A aplicação utiliza autenticação JWT.
 
 Usuário de teste:
 
+```json
 {
   "username": "admin",
   "password": "123456"
