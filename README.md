@@ -183,7 +183,7 @@ Quando o status de um chamado é alterado para **Finalizado**, a API:
 ### 4. Processamento assíncrono
 
 O `SupportDesk.Worker` fica escutando essa fila.  
-Quando recebe a mensagem, ele processa o evento e registra uma notificação no MongoDB.
+Quando recebe a mensagem, ele processa o evento e registra um log no MongoDB.
 
 ### 5. Resultado final
 
