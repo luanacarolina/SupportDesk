@@ -103,9 +103,9 @@ export default function TicketsTable({
                           handleStatusChange(ticket.id, e.target.value)
                         }
                       >
-                        <option value={1}>Open</option>
-                        <option value={2}>In Progress</option>
-                        <option value={3}>Completed</option>
+                        <option value={1}>Aberto</option>
+                        <option value={2}>Em Andamento</option>
+                        <option value={3}>Finalizado</option>
                       </select>
                     </td>
                     <td>{formatDate(ticket.createdAt)}</td>
