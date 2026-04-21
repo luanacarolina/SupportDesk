@@ -1,4 +1,4 @@
-# 🛠️ SupportDesk
+#  SupportDesk
 
 Sistema de gerenciamento de chamados técnicos.
 
